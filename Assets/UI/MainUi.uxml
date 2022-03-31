@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="Screen" style="justify-content: flex-start; align-items: flex-start;">
+        <ui:VisualElement style="border-top-left-radius: 10px; border-bottom-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; height: 75px; width: 141px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); background-color: rgba(243, 243, 243, 0.15); align-items: flex-start; justify-content: flex-start;">
+            <ui:Label text="Bush count:" display-tooltip-when-elided="true" name="BCount_label" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -25,16 +25,21 @@ public class MapGenerator : MonoBehaviour
 
     public bool autoUpdate;
     public bool isIsland;
-
+    public bool bushSpawn = false;
+    //public GameObject bush;
     public TerrainType[] regions;
 
     private void Awake()
     {
         falloffMap = FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight);
     }
+    void Start()
+    {
 
+    }
     public void GenerateMap()
     {
+        Debug.Log("Generating map");
         float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, octaves, persistance, lacunarity, seed, offset);
         Color[] colorMap = new Color[mapWidth * mapHeight];
         for (int y = 0; y < mapHeight; y++)
@@ -50,6 +55,7 @@ public class MapGenerator : MonoBehaviour
                 {
                     if (currentHeight <= regions[i].height)
                     {
+
                         colorMap[y * mapWidth + x] = regions[i].color;
                         break;
                     }
@@ -67,13 +73,20 @@ public class MapGenerator : MonoBehaviour
         }
         else if (drawMode == DrawMode.Mesh)
         {
-            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap,meshHeightMultiplier,meshHeightCurve),TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
+            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier, meshHeightCurve), TextureGenerator.TextureFromColorMap(colorMap, mapWidth, mapHeight));
         }
         else if (drawMode == DrawMode.FalloffMap)
         {
             display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight)));
 
         }
+        if (bushSpawn)
+        {
+            BushController bushController = FindObjectOfType<BushController>();
+            bushController.mapSize = mapHeight;
+            bushController.GenerateBushes(noiseMap);
+        }
+
 
     }
 

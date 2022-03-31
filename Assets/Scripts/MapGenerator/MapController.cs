@@ -8,14 +8,17 @@ public class MapController : MonoBehaviour
     public float timeScaler = 0.1f;
 
     public bool isScrolling = false;
+    private BushController bushController;
     private void Start()
     {
+        mapGenerator.bushSpawn = true;
         mapGenerator.GenerateMap();
+        bushController = FindObjectOfType<BushController>();
+        
     }
     void Update()
     {
-        print(isScrolling);
-        if (Input.GetKeyDown(KeyCode.Space)) isScrolling = !isScrolling;
+        //if (Input.GetKeyDown(KeyCode.Space)) isScrolling = !isScrolling;
         if (Input.GetKeyDown(KeyCode.R)) RegenerateMap();
         if (isScrolling) MapScroller();
 
@@ -29,6 +32,7 @@ public class MapController : MonoBehaviour
     }
     void RegenerateMap()
     {
+        bushController.DeleteBushes();
         mapGenerator.seed = Random.Range(0, 100);
         mapGenerator.GenerateMap();
     }

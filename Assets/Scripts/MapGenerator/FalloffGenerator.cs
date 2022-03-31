@@ -18,8 +18,8 @@ public static class FalloffGenerator
         return map;
     }
     static float Evaluate(float value){
-        float a =3;
-        float b =2.2f;
+        float a =4; //3
+        float b =3; //2.2
 
         return (Mathf.Pow(value,a))/(Mathf.Pow(value,a) + Mathf.Pow(b - b*value,a));
     }
