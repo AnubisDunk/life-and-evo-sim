@@ -9,11 +9,10 @@ public class MapController : MonoBehaviour
 
     public bool isScrolling = false;
     private BushController bushController;
-    private void Start()
+    private void Awake()
     {
-        mapGenerator.bushSpawn = true;
         mapGenerator.GenerateMap();
-        bushController = FindObjectOfType<BushController>();
+      
         
     }
     void Update()

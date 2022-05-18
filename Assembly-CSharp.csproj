@@ -36,20 +36,26 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\UI\StatsUi.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\MapGenerator.cs" />
-     <Compile Include="Assets\Scripts\UIController.cs" />
+     <Compile Include="Assets\Scripts\CreatureGenome.cs" />
+     <Compile Include="Assets\Scripts\Genes.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
+     <Compile Include="Assets\Scripts\PopulationManager.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\MeshGenerator.cs" />
+     <Compile Include="Assets\Scripts\AgentInfo.cs" />
      <Compile Include="Assets\Scripts\BushController.cs" />
+     <Compile Include="Assets\Scripts\MapGenerator\Utils.cs" />
      <Compile Include="Assets\Scripts\CreatureController.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\FalloffGenerator.cs" />
      <Compile Include="Assets\Scripts\Bush.cs" />
      <Compile Include="Assets\Scripts\Creature.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\TextureGenerator.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\MapController.cs" />
+     <Compile Include="Assets\Scripts\UI\PlayerUI.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\Noise.cs" />
      <Compile Include="Assets\Scripts\MapGenerator\MapDisplay.cs" />
-     <None Include="Assets\UI\MainUi.uxml" />
+     <Compile Include="Assets\Scripts\SenseRender.cs" />
      <None Include="Assets\Materials\shader01.shader" />
     <Reference Include="UnityEngine">
         <HintPath>E:\unityEdit\2020.3.21f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

@@ -12,13 +12,18 @@ public class Bush : MonoBehaviour
     Animator anim;
     MeshRenderer leavesMeshRender;
     MeshRenderer fruitMeshRender;
+    BoxCollider collider;
 
+    public void Eat()
+    {
+        isEatable = false;
+    }
     void Start()
     {
         leavesMeshRender = leaves.GetComponent<MeshRenderer>();
         fruitMeshRender = fruit.GetComponent<MeshRenderer>();
         anim = GetComponent<Animator>();
-
+        collider = GetComponent<BoxCollider>();
         leavesMeshRender.material.color = leavesColor;
         fruitMeshRender.material.color = fruitColor;
         RotateObjectOnFloor();
@@ -26,14 +31,13 @@ public class Bush : MonoBehaviour
     void RotateObjectOnFloor()
     {
         int layerMask = 1 << 8;
-        
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, Mathf.Infinity, layerMask))
         {
             Debug.DrawRay(transform.position, Vector3.down * hit.distance, Color.yellow);
             transform.localPosition = hit.point;
             transform.localRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-            Debug.Log($"Did Hit {hit.collider.gameObject.name}");
         }
         else
         {
@@ -45,8 +49,16 @@ public class Bush : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetBool("IsEatable",isEatable);
+        anim.SetBool("IsEatable", isEatable);
         leavesMeshRender.material.color = leavesColor;
         fruitMeshRender.material.color = fruitColor;
+        if (isEatable)
+        {
+            collider.enabled = true;
+        }
+        else
+        {
+            collider.enabled = false;
+        }
     }
 }

@@ -25,17 +25,12 @@ public class MapGenerator : MonoBehaviour
 
     public bool autoUpdate;
     public bool isIsland;
-    public bool bushSpawn = false;
     //public GameObject bush;
     public TerrainType[] regions;
 
     private void Awake()
     {
         falloffMap = FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight);
-    }
-    void Start()
-    {
-
     }
     public void GenerateMap()
     {
@@ -80,12 +75,14 @@ public class MapGenerator : MonoBehaviour
             display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapWidth, mapHeight)));
 
         }
-        if (bushSpawn)
-        {
-            BushController bushController = FindObjectOfType<BushController>();
-            bushController.mapSize = mapHeight;
-            bushController.GenerateBushes(noiseMap);
-        }
+        Utils.noiseMap = noiseMap;
+        Utils.mapSize = mapWidth;
+        // if (bushSpawn)
+        // {
+        //     BushController bushController = FindObjectOfType<BushController>();
+        //     bushController.mapSize = mapHeight;
+        //     bushController.GenerateBushes(noiseMap);
+        // }
 
 
     }

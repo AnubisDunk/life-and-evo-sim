@@ -5,17 +5,29 @@ using UnityEngine;
 public class BushController : MonoBehaviour
 {
     public GameObject bush;
+    public GameObject waterSource;
     public Transform bushHolder;
+    public Transform waterHolder;
     public int mapSpacing = 10;
 
-    public int mapSize;
+    int mapSize;
 
+    bool flag;
     private int bushCount = 0;
-    private UIController uiController;
-    // Start is called before the first frame update
-    void OnEnable()
+    //private UIController uiController;
+    void Start()
     {
-        uiController = FindObjectOfType<UIController>();
+        flag = true;
+    }
+    private void Update()
+    {
+        if (flag)
+        {
+            mapSize = Utils.mapSize;
+            GenerateBushes(Utils.noiseMap);
+            flag = !flag;
+        }
+
     }
     public void GenerateBushes(float[,] noiseMap)
     {
@@ -23,7 +35,10 @@ public class BushController : MonoBehaviour
         {
             for (int x = 0; x < mapSize; x++)
             {
-
+                if (noiseMap[x, y] <= 0.4f && noiseMap[x, y] >= 0.35f)
+                {
+                    Instantiate(waterSource, new Vector3(x * mapSpacing - (mapSize * 5), 8, y * -mapSpacing + (mapSize * 5)), Quaternion.identity, waterHolder);
+                }
                 if (noiseMap[x, y] > 0.5f && noiseMap[x, y] < 0.7f && Random.Range(0f, 1f) > 0.7f)
                 {
                     int randOffset = Random.Range(1, 4);
@@ -32,8 +47,8 @@ public class BushController : MonoBehaviour
                 }
             }
         }
-       
-        uiController.UpdateBushCount(bushCount);
+
+        //uiController.UpdateBushCount(bushCount);
 
     }
     public void DeleteBushes()
@@ -43,8 +58,6 @@ public class BushController : MonoBehaviour
             GameObject.Destroy(bush.gameObject);
         }
         bushCount = 0;
-        uiController.UpdateBushCount(bushCount);
+        //uiController.UpdateBushCount(bushCount);
     }
-
-    // Update is called once per frame
 }
