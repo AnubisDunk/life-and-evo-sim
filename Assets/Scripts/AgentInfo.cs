@@ -14,11 +14,13 @@ public class AgentInfo : MonoBehaviour
     public GameObject GeneName;
 
     public Text nameText;
+    public Text creatureTypeText;
     public Text stateText;
     public Text sexText;
     public Text growText;
     public Text hungerText;
     public Text thirstText;
+    public Text pregText;
     public Font roboto;
 
     RaycastHit hit;
@@ -36,7 +38,7 @@ public class AgentInfo : MonoBehaviour
 
     }
 
-    void Pause()
+    void Inputs()
     {
         if (Input.GetKey(KeyCode.Space))
         {
@@ -45,6 +47,10 @@ public class AgentInfo : MonoBehaviour
         if (cc != null)
         {
             cc.enabled = isPaused ? false : true;
+        }
+        if (Input.GetKey(KeyCode.Backspace))
+        {
+            cc.Die();
         }
     }
     void Update()
@@ -71,18 +77,22 @@ public class AgentInfo : MonoBehaviour
                     Text geneNameUIText = geneNameUI.AddComponent<Text>();
                     Text geneDataUIText = geneDataUI.AddComponent<Text>();
                     geneNameUIText.font = roboto;
+                    geneNameUIText.fontSize = 20;
+                    geneDataUIText.fontSize = 20;
                     geneDataUIText.font = roboto;
                     geneNameUIText.text = cg.genome[i].geneName;
                     geneDataUIText.text = c.genes.genes[i].ToString();
                 }
                 isShowingInfo = true;
             }
-            
+
             DrawFace();
             float senseRadius = cc.GetSenseRadius();
             senseRadiusDrawer.transform.position = hit.transform.position;
             sr.DrawCircle(100, senseRadius);
+            Inputs();
         }
+        // }
         else
         {
             RemoveFace();
@@ -93,7 +103,6 @@ public class AgentInfo : MonoBehaviour
             isShowingInfo = false;
 
         }
-        Pause();
     }
     void DrawFace()
     {
@@ -109,7 +118,6 @@ public class AgentInfo : MonoBehaviour
         selector.SetActive(true);
         faceCamera.SetActive(true);
         isFollowing = true;
-        Debug.Log($"Did Hit {hit.collider.gameObject.name}");
     }
     void RemoveFace()
     {
@@ -130,11 +138,20 @@ public class AgentInfo : MonoBehaviour
         {
             sexText.text = "Female";
         }
-        nameText.text = cc.gameObject.name;
+        nameText.text = cc.gameObject.name + "| "+ cc.mName + "/" + cc.fName;
         stateText.text = cc.stateText.text;
+        creatureTypeText.text = cc.cratureType.ToString();
         hungerText.text = cc.hunger.ToString();
         thirstText.text = cc.thirst.ToString();
         growText.text = cc.size.ToString();
+        if (!cc.isCreatureMale())
+        {
+            pregText.text = cc.currentDuriation.ToString();
+        }
+        else
+        {
+            pregText.text = "-";
+        }
 
     }
     void RemoveData()

@@ -275,7 +275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd9f235d35f23764f8a214e72bbad8ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
 --- !u!1 &3025735175688534882
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,17 +412,30 @@ MonoBehaviour:
   rEye: {fileID: 633049170488976058}
   body: {fileID: 3025735175688534882}
   genomeSize: 10
-  size: 0
   eyeColor: {r: 0.9245283, g: 0.8852795, b: 0.8852795, a: 0}
   bodyColor: {r: 0.2004717, g: 0.5284314, b: 0.8018868, a: 0}
   bodyColorFemale: {r: 0.6792453, g: 0.39409044, b: 0.603246, a: 0}
   geneSignature: 
+  hBody: {fileID: 2959467708922500008, guid: 56fa3a479675d8541a88dbbf07d67420, type: 3}
+  hLEye: {fileID: 6126759889098982205, guid: 56fa3a479675d8541a88dbbf07d67420, type: 3}
+  hREye: {fileID: 5089184414475906193, guid: 56fa3a479675d8541a88dbbf07d67420, type: 3}
+  pBody: {fileID: 1540848145580580396, guid: 73cc795f97415e242830ede40c3d169b, type: 3}
+  pLEye: {fileID: -576270446857365381, guid: 73cc795f97415e242830ede40c3d169b, type: 3}
+  pREye: {fileID: -2842518567577930036, guid: 73cc795f97415e242830ede40c3d169b, type: 3}
+  oBody: {fileID: -2964257768663673547, guid: bff3b03c11f5fac4d9f437fdb9a489df, type: 3}
+  oLEye: {fileID: 4039173572623092417, guid: bff3b03c11f5fac4d9f437fdb9a489df, type: 3}
+  oREye: {fileID: -6524522640546267935, guid: bff3b03c11f5fac4d9f437fdb9a489df, type: 3}
   isMale: 0
   hungerSpeed: 1
   senseRadius: 0
   moveSpeed: 0
   thirstSpeed: 0
   growingSpeed: 0
+  hungerLevel: 0
+  thirstLevel: 0
+  pregnancyDuriation: 0
+  foodtypeGene: 0
+  creatureType: 0
 --- !u!114 &3309319955208987223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,18 +448,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aae2d8ee29e2cd4b9b25655e4c7daec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToDirectionChange: 5
-  hunger: 500
-  thirst: 500
+  hunger: 100
+  thirst: 100
   state: 1
   stateText: {fileID: 643799670107465420}
   hungerBar: {fileID: 988883373637382355}
   thirstBar: {fileID: 2004329771618769932}
+  currentDuriation: 0
   desiredCreature: {fileID: 3309319955208987227}
   replica: {fileID: 3309319955208987227}
+  cratureType: 0
+  size: 0
+  sizeMultiplier: 3
   isLooking: 0
   isFound: 0
   desire: 0
+  fName: 
+  mName: 
+  creature: {fileID: 0}
   creatureWayPoint: {x: 0, y: 0, z: 0}
 --- !u!65 &3309319955208987225
 BoxCollider:
@@ -504,24 +522,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   genome:
-  - geneName: Sex
+  - geneName: Sex Gene
     geneMinValue: 0
     geneMaxValue: 1
   - geneName: Sensory Radius
-    geneMinValue: 1
-    geneMaxValue: 50
+    geneMinValue: 10
+    geneMaxValue: 100
   - geneName: Move Speed
-    geneMinValue: 3
-    geneMaxValue: 50
+    geneMinValue: 5
+    geneMaxValue: 100
   - geneName: Hunger Speed
     geneMinValue: 1
-    geneMaxValue: 2
+    geneMaxValue: 3
   - geneName: Thirst Speed
     geneMinValue: 1
-    geneMaxValue: 2
+    geneMaxValue: 3
   - geneName: Grow Speed
     geneMinValue: 0.5
+    geneMaxValue: 3
+  - geneName: Hunger Level
+    geneMinValue: 0.1
+    geneMaxValue: 0.7
+  - geneName: Thirst Level
+    geneMinValue: 0.1
+    geneMaxValue: 0.7
+  - geneName: Pregnancy
+    geneMinValue: 0.5
     geneMaxValue: 2
+  - geneName: Food Gene
+    geneMinValue: 0
+    geneMaxValue: 1
 --- !u!1 &3417577832853671181
 GameObject:
   m_ObjectHideFlags: 0

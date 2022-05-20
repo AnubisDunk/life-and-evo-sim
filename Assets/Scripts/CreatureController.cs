@@ -5,53 +5,57 @@ using UnityEditor;
 using UnityEngine.UI;
 public class CreatureController : MonoBehaviour
 {
-    public float timeToDirectionChange = 1; // change direction every second
-    public float hunger = 500f;
-    public float thirst = 500f;
+    //public float timeToDirectionChange = 1; // change direction every second
+    public float hunger = 100f;
+    public float thirst = 100f;
 
     bool isMale;
-    float hungerBase;
-    float thirstBase;
+    float hungerBase, thirstBase;
     float senseRadius;
-    float moveSpeed; // move units per second
-    float absSpeed;
-    float hungerSpeed,thirstSpeed,growingSpeed;
+    float absSpeed, moveSpeed; // move units per second
+
+    float hungerSpeed, thirstSpeed, growingSpeed, hungerLevel, thirstLevel, pregnancyDuriation;
 
 
     public Creature.State state = Creature.State.Idle;
     public Text stateText;
     public RectTransform hungerBar;
     public RectTransform thirstBar;
-
+    public float currentDuriation;
     public GameObject desiredCreature;
     public GameObject replica;
-    public float size;
+    public Creature.CreatureType cratureType;
+    public float size = 1;
+    public int sizeMultiplier = 3;
     GameObject creatureHolder;
     public bool isLooking, isFound, desire; //Desire |true - male false - female
     Vector3 randomDirection;
     Vector3 foodDirection, waterDirection;
 
     float lastDirectionChange = 0;
-    
+
+    public string fName, mName;
     bool foodDetected = false;
     bool waterDetected = false;
     bool mateDetected = false;
-    bool isHungry, isThirsty, isResting, isMating;
+    bool isHungry, isThirsty, isResting, isMating, isPregnant;
 
-    Creature creature;
-
-    Vector3 moveVector;
+    public Creature creature;
+    Genes father;
+    Vector3 moveVector, shorelinePos;
     public Vector3 creatureWayPoint;
     SphereCollider triggerCol;
     Bush bush;
 
     int layerMask;
     // Start is called before the first frame update
-   
-    public float GetSenseRadius(){
+
+    public float GetSenseRadius()
+    {
         return senseRadius;
     }
-    public bool isCreatureMale(){
+    public bool isCreatureMale()
+    {
         return isMale;
     }
     void Start()
@@ -64,19 +68,21 @@ public class CreatureController : MonoBehaviour
         absSpeed = moveSpeed;
         hungerBase = hunger;
         thirstBase = thirst;
-        //size = 1;
         layerMask = 1 << 8;
         Moving();
+        cratureType = creature.creatureType;
     }
     void GeneDecode()
     {
         isMale = creature.isMale;
         senseRadius = creature.senseRadius;
         moveSpeed = creature.moveSpeed;
-        hungerSpeed = creature.moveSpeed;
+        hungerSpeed = creature.hungerSpeed;
         thirstSpeed = creature.thirstSpeed;
         growingSpeed = creature.growingSpeed;
-        // hunger = creature.hunger;
+        hungerLevel = creature.hungerLevel;
+        thirstLevel = creature.thirstLevel;
+        pregnancyDuriation = creature.pregnancyDuriation;
     }
     // Update is called once per frame
     void Update()
@@ -107,10 +113,12 @@ public class CreatureController : MonoBehaviour
                 break;
         }
     }
-    void Growing(){
-        if(size<=100){
-            transform.localScale = new Vector3(size*0.03f,size*0.03f,size*0.03f);
-            size = size + growingSpeed * Time.deltaTime;
+    void Growing()
+    {
+        if (size <= 100)
+        {
+            transform.localScale = new Vector3(size * 0.03f, size * 0.03f, size * 0.03f);
+            size = size + growingSpeed * sizeMultiplier * Time.deltaTime;
         }
     }
     private void LookingForMate()
@@ -138,14 +146,30 @@ public class CreatureController : MonoBehaviour
 
     private void Mating()
     {
-        if ((!isMale)&&(!isResting))
+        if ((!isMale) && (!isResting) && (size >= 100) && !isPregnant)
         {
-            string motherName = creature.name;
-            Childbirth(creature.genes, desiredCreature.GetComponent<Creature>().genes,motherName);
+            currentDuriation = 0;
+            isPregnant = true;
+
+            if (father == null) Debug.Log(this.name);
+            fName = desiredCreature.name;
+            father = desiredCreature.GetComponent<Creature>().genes;
         }
         StartCoroutine(Resting());
     }
+    void Pregnant()
+    {
+        Exploring();
+        currentDuriation = currentDuriation + 10 * Time.deltaTime;
+        if ((currentDuriation >= 100 * pregnancyDuriation) && (isPregnant))
+        {
+            string motherName = creature.name;
+            Childbirth(creature.genes, father, motherName);
+            isPregnant = false;
+            currentDuriation = 0;
+        }
 
+    }
     private void Childbirth(Genes mother, Genes father, string name)
     {
         Genes rng;
@@ -158,11 +182,16 @@ public class CreatureController : MonoBehaviour
             rng = father;
         }
         GameObject child = Instantiate(replica, transform.position, Quaternion.identity, creatureHolder.transform);
-        child.name = $"C|{name}";
+        char childName = name[0];
+        char childNumber = name[1];
+        childName++;
+        child.name = $"{childName}{childNumber}";
         StatsUi.bornValue++;
-        StatsUi.populationValue++;
+        // StatsUi.populationValue++;
         child.GetComponent<CreatureController>().size = 1;
-        child.GetComponent<Creature>().EncodeGene(rng);
+        child.GetComponent<CreatureController>().mName = this.name;
+        child.GetComponent<CreatureController>().fName = fName;
+        child.GetComponent<Creature>().EncodeGenome(rng);
     }
     IEnumerator Resting()
     {
@@ -177,6 +206,16 @@ public class CreatureController : MonoBehaviour
         if ((transform.position - creatureWayPoint).magnitude < 1)
         {
             creatureWayPoint = NewWayPoint(senseRadius);
+            AlignWaypointNormal();
+            if (creatureWayPoint.y <= 2)
+            {
+
+                creatureWayPoint = shorelinePos;
+            }
+            else
+            {
+                shorelinePos = creatureWayPoint;
+            }
             foodDetected = false;
             waterDetected = false;
         }
@@ -188,12 +227,13 @@ public class CreatureController : MonoBehaviour
 
     void LookingForWater()
     {
+        isLooking = false;
         isThirsty = true;
         if (waterDetected)
         {
             creatureWayPoint = waterDirection;
         }
-        if (((transform.position - creatureWayPoint).magnitude < 1) && (waterDetected && isThirsty))
+        if (((transform.position - creatureWayPoint).magnitude < 5) && (waterDetected && isThirsty))
         {
             ThirstRefill();
             waterDetected = false;
@@ -207,6 +247,7 @@ public class CreatureController : MonoBehaviour
     void LookingForFood()
     {
         isHungry = true;
+        isLooking = false;
         if (foodDetected)
         {
             creatureWayPoint = foodDirection;
@@ -225,6 +266,10 @@ public class CreatureController : MonoBehaviour
 
     void Restrictions()
     {
+        if (isPregnant)
+        {
+            Pregnant();
+        }
         if (transform.position.y < 0)
         {
             moveSpeed = absSpeed / 2f;
@@ -234,7 +279,7 @@ public class CreatureController : MonoBehaviour
             moveSpeed = absSpeed;
         }
     }
-    void Die()
+    public void Die()
     {
         StatsUi.deadValue++;
         StatsUi.populationValue--;
@@ -243,6 +288,7 @@ public class CreatureController : MonoBehaviour
         //AlignSurfaceNormal();
         transform.rotation = Quaternion.Euler(90, 0, 0);
         creature.UpdateColors();
+        state = Creature.State.Dead;
         foreach (var comp in gameObject.GetComponents<Component>())
         {
             if (!(comp is Transform))
@@ -251,16 +297,15 @@ public class CreatureController : MonoBehaviour
             }
         }
 
+        ExportData data = new ExportData();
+        data.WriteData(this, creature);
+        //Destroy(gameObject);
     }
     void Hunger()
     {
-        if (hunger <= 0 || thirst <= 0)
-        {
-            state = Creature.State.Dead;
-        }
         if (hunger >= 0)
         {
-            if (hunger < hungerBase / 2)
+            if (hunger < hungerBase * hungerLevel)
             {
                 state = Creature.State.LookingForFood;
             }
@@ -270,18 +315,23 @@ public class CreatureController : MonoBehaviour
         }
         if (thirst >= 0)
         {
-            if (thirst < thirstBase / 2)
+            if (thirst < thirstBase * thirstLevel)
             {
                 state = Creature.State.LookingForWater;
             }
             thirst = thirst - thirstSpeed * Time.deltaTime;
-     
+
             float scaledvalue = thirst / thirstBase * 40;
-            thirstBar.sizeDelta = new Vector2(scaledvalue,3);
+            thirstBar.sizeDelta = new Vector2(scaledvalue, 3);
         }
-        if ((hunger > hungerBase * 0.6f) && (thirst > thirstBase * 0.6f) && !isResting && size >=100)
+        if ((hunger > hungerBase * 0.6f) && (thirst > thirstBase * 0.6f) && !isResting && size >= 100)
         {
             state = Creature.State.LookingForMate;
+        }
+        if (hunger <= 0 || thirst <= 0)
+        {
+            state = Creature.State.Dead;
+            // Die();
         }
     }
     void HungerRefill()
@@ -332,7 +382,6 @@ public class CreatureController : MonoBehaviour
         {
             Debug.DrawRay(creatureWayPoint, Vector3.down * hit.distance, Color.red);
             creatureWayPoint = hit.point;
-            //Debug.Log($"Did Hit {hit.collider.gameObject.name}");
         }
     }
     void AlignSurfaceNormal()

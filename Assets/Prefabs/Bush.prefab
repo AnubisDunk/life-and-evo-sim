@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 977444815857823119}
   - component: {fileID: 1449439533833067600}
   - component: {fileID: 5210553134106579156}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Leaves
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,8 @@ GameObject:
   - component: {fileID: 5933639934219323512}
   - component: {fileID: 5933639934219323515}
   - component: {fileID: 2785444807655887062}
-  m_Layer: 0
+  - component: {fileID: -4058946045567720631}
+  m_Layer: 10
   m_Name: Bush
   m_TagString: Bush
   m_Icon: {fileID: 0}
@@ -152,6 +153,11 @@ MonoBehaviour:
   leavesColor: {r: 0.34901962, g: 0.57254905, b: 0.08235294, a: 1}
   fruitColor: {r: 0.9433962, g: 0.14684942, b: 0.16768537, a: 1}
   isEatable: 1
+  age: 0
+  ageGene: 0
+  yield: 0
+  productionSpeed: 0
+  maturationSpeed: 0
 --- !u!65 &2785444807655887062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -165,6 +171,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6, y: 2, z: 6}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-4058946045567720631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5933639934219323513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829a4f49b0db4d44e81b5ef2ca5ad244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  genome:
+  - geneName: Age
+    geneMinValue: 10
+    geneMaxValue: 100
+  - geneName: Maturation Speed
+    geneMinValue: 1
+    geneMaxValue: 5
+  - geneName: Yield
+    geneMinValue: 1
+    geneMaxValue: 5
+  - geneName: Production Speed
+    geneMinValue: 1
+    geneMaxValue: 5
 --- !u!1 &8498914977989722828
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +207,7 @@ GameObject:
   - component: {fileID: 5044431377921315043}
   - component: {fileID: 4183318551762165079}
   - component: {fileID: 1634146310470629688}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +223,7 @@ Transform:
   m_GameObject: {fileID: 8498914977989722828}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 10.000002, y: 10.000002, z: 10.000002}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 6418569248691933891}
   m_RootOrder: 0

@@ -34,7 +34,7 @@ public class MapGenerator : MonoBehaviour
     }
     public void GenerateMap()
     {
-        Debug.Log("Generating map");
+        
         float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, octaves, persistance, lacunarity, seed, offset);
         Color[] colorMap = new Color[mapWidth * mapHeight];
         for (int y = 0; y < mapHeight; y++)

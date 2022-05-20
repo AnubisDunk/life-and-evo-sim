@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerUI : MonoBehaviour
 {
-    public Camera camera;
+    Camera cam;
     private Transform target;
     void Start()
     {
-        camera = Camera.main;
-        target = camera.gameObject.transform;
+        cam = Camera.main;
+        target = cam.gameObject.transform;
     }
 
     // Update is called once per frame
