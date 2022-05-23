@@ -522,7 +522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   genome:
-  - geneName: Sex Gene
+  - geneName: Gender
     geneMinValue: 0
     geneMaxValue: 1
   - geneName: Sensory Radius
@@ -549,7 +549,7 @@ MonoBehaviour:
   - geneName: Pregnancy
     geneMinValue: 0.5
     geneMaxValue: 2
-  - geneName: Food Gene
+  - geneName: Diet
     geneMinValue: 0
     geneMaxValue: 1
 --- !u!1 &3417577832853671181

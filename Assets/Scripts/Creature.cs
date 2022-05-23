@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,19 +41,24 @@ public class Creature : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    public void Init(bool isFirst, float range, Genes newgenes)
     {
-        bodyMeshRenderer = body.GetComponent<MeshRenderer>();
-        lEyeMeshRenderer = lEye.GetComponent<MeshRenderer>();
-        rEyeMeshRenderer = rEye.GetComponent<MeshRenderer>();
-        bodyMeshFilter = body.GetComponent<MeshFilter>();
-        lEyeMeshFilter = lEye.GetComponent<MeshFilter>();
-        rEyeMeshFilter = rEye.GetComponent<MeshFilter>();
-        cg = GetComponent<CreatureGenome>();
-        genomeSize = cg.genome.Length;
-        genes = Genes.RandomGenes(cg);
+        BaseInit();
+        range = Mathf.Round(range * 100f) *0.01f; 
+        if (isFirst)
+        {
+            genes = Genes.RandomGenes(cg);
+            genes.genes[9] = range;
+        }
+        else
+        {
+            genes = newgenes;
+            geneSignature = genes.ShowGenome();
+            DecodeGenome();
+        }
         geneSignature = genes.ShowGenome();
         DecodeGenome();
+        genomeSize = cg.genome.Length;
         if (isMale)
         {
             bodyMeshRenderer.material.color = bodyColor;
@@ -61,18 +67,29 @@ public class Creature : MonoBehaviour
         {
             bodyMeshRenderer.material.color = bodyColorFemale;
         }
+    }
+
+    private void BaseInit()
+    {
+        bodyMeshRenderer = body.GetComponent<MeshRenderer>();
+        lEyeMeshRenderer = lEye.GetComponent<MeshRenderer>();
+        rEyeMeshRenderer = rEye.GetComponent<MeshRenderer>();
+        bodyMeshFilter = body.GetComponent<MeshFilter>();
+        lEyeMeshFilter = lEye.GetComponent<MeshFilter>();
+        rEyeMeshFilter = rEye.GetComponent<MeshFilter>();
+        cg = GetComponent<CreatureGenome>();
         lEyeMeshRenderer.material.color = eyeColor;
         rEyeMeshRenderer.material.color = eyeColor;
         StatsUi.populationValue++;
     }
+
     public void EncodeGenome(Genes newgenes)
     {
         genes = newgenes;
         geneSignature = genes.ShowGenome();
-
         DecodeGenome();
     }
-    void DecodeGenome()
+    public void DecodeGenome()
     {
         isMale = genes.genes[0] > 0.5f ? true : false;
         senseRadius = genes.genes[1];
@@ -84,20 +101,23 @@ public class Creature : MonoBehaviour
         thirstLevel = genes.genes[7];
         pregnancyDuriation = genes.genes[8];
         foodtypeGene = genes.genes[9];
-        if (foodtypeGene > 0.33f)
+        if (foodtypeGene >= 0.33f)
         {
-            if (foodtypeGene > 0.66f)
+            if (foodtypeGene >= 0.66f)
             {
                 InitCreatureType(CreatureType.Omnivore);
+                //Debug.Log("Omnivore: " + foodtypeGene + name);
             }
             else
             {
                 InitCreatureType(CreatureType.Carnivore);
+                //Debug.Log("Carnivore: " + foodtypeGene + name);
             }
         }
         else
         {
             InitCreatureType(CreatureType.Herbivore);
+            //Debug.Log("Herbivore: " + foodtypeGene + name);
         }
 
     }
@@ -136,7 +156,10 @@ public class Creature : MonoBehaviour
         Dead,
         LookingForFood,
         LookingForWater,
-        LookingForMate
+        LookingForMate,
+        LookingForPrey,
+        Chasing,
+        Fleeing
     }
     public enum CreatureType
     {

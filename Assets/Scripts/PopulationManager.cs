@@ -5,7 +5,7 @@ using UnityEngine;
 public class PopulationManager : MonoBehaviour
 {
     public GameObject creature;
-    public int hCount,cCount,oCount;
+    public int hCount, cCount, oCount;
 
     public Transform creatureHolder;
     public int mapSpacing = 10;
@@ -41,41 +41,44 @@ public class PopulationManager : MonoBehaviour
             spawny = Random.Range(0, mapSize);
             if (CheckPos(spawnx, spawny, noiseMap))
             {
-                var instance = Instantiate(creature, new Vector3((spawnx*10)-(mapSize * 5)  , 100, (spawny*-10)+(mapSize*5)), Quaternion.identity, creatureHolder);
+                var instance = Instantiate(creature, new Vector3((spawnx * 10) - (mapSize * 5), 100, (spawny * -10) + (mapSize * 5)), Quaternion.identity, creatureHolder);
                 instance.name = $"a{popTemp}";
+                instance.GetComponent<Creature>().Init(true, Random.Range(0f, 0.33f), null);
+                instance.GetComponent<CreatureController>().Init();
                 instance.GetComponent<CreatureController>().size = 100;
-                instance.GetComponent<Creature>().genes.genes[9] = Random.Range(0f,0.33f);
                 StatsUi.hPopulation++;
                 popTemp++;
-                
+
             }
         }
-        popTemp=0;
+        popTemp = 0;
         while (popTemp != cCount)
         {
             spawnx = Random.Range(0, mapSize);
             spawny = Random.Range(0, mapSize);
             if (CheckPos(spawnx, spawny, noiseMap))
             {
-                var instance = Instantiate(creature, new Vector3((spawnx*10)-(mapSize * 5)  , 100, (spawny*-10)+(mapSize*5)), Quaternion.identity, creatureHolder);
+                var instance = Instantiate(creature, new Vector3((spawnx * 10) - (mapSize * 5), 100, (spawny * -10) + (mapSize * 5)), Quaternion.identity, creatureHolder);
+                instance.GetComponent<Creature>().Init(true, Random.Range(0.34f, 0.66f), null);
+                instance.GetComponent<CreatureController>().Init();
                 instance.name = $"A{popTemp}";
                 instance.GetComponent<CreatureController>().size = 100;
-                instance.GetComponent<Creature>().genes.genes[9] = Random.Range(0.34f,0.59f);
                 StatsUi.cPopulation++;
                 popTemp++;
             }
         }
-        popTemp=0;
+        popTemp = 0;
         while (popTemp != oCount)
         {
             spawnx = Random.Range(0, mapSize);
             spawny = Random.Range(0, mapSize);
             if (CheckPos(spawnx, spawny, noiseMap))
             {
-                var instance = Instantiate(creature, new Vector3((spawnx*10)-(mapSize * 5)  , 100, (spawny*-10)+(mapSize*5)), Quaternion.identity, creatureHolder);
+                var instance = Instantiate(creature, new Vector3((spawnx * 10) - (mapSize * 5), 100, (spawny * -10) + (mapSize * 5)), Quaternion.identity, creatureHolder);
+                instance.GetComponent<Creature>().Init(true, Random.Range(0.67f, 1f), null);
+                instance.GetComponent<CreatureController>().Init();
                 instance.name = $"O{popTemp}";
                 instance.GetComponent<CreatureController>().size = 100;
-                instance.GetComponent<Creature>().genes.genes[9] = Random.Range(0.6f,1f);
                 StatsUi.oPopulation++;
                 popTemp++;
             }
@@ -87,7 +90,9 @@ public class PopulationManager : MonoBehaviour
         if (noisemap[spawnx, spawny] >= 0.5f)
         {
             return true;
-        }else{
+        }
+        else
+        {
             return false;
         }
     }
