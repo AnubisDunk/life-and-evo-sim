@@ -14,6 +14,7 @@ public class Genes
         return(res);
     }
     public static Genes RandomGenes (CreatureGenome cg) {
+        
         float[] values = new float[cg.genome.Length];
         for (int i = 0; i < cg.genome.Length; i++) {
             values[i] = Random.Range(cg.genome[i].geneMinValue,cg.genome[i].geneMaxValue);

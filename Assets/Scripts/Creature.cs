@@ -44,7 +44,7 @@ public class Creature : MonoBehaviour
     public void Init(bool isFirst, float range, Genes newgenes)
     {
         BaseInit();
-        range = Mathf.Round(range * 100f) *0.01f; 
+        range = Mathf.Round(range * 100f) * 0.01f;
         if (isFirst)
         {
             genes = Genes.RandomGenes(cg);

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 633049170488976058}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0.3, y: 2.4, z: 0.5}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 100, y: 200, z: 100}
   m_Children: []
   m_Father: {fileID: 2785124919349328097}
   m_RootOrder: 2
@@ -456,6 +456,7 @@ MonoBehaviour:
   thirstBar: {fileID: 2004329771618769932}
   currentDuriation: 0
   desiredCreature: {fileID: 3309319955208987227}
+  prey: {fileID: 0}
   replica: {fileID: 3309319955208987227}
   cratureType: 0
   size: 0
@@ -525,33 +526,43 @@ MonoBehaviour:
   - geneName: Gender
     geneMinValue: 0
     geneMaxValue: 1
+    isMatatable: 1
   - geneName: Sensory Radius
     geneMinValue: 10
     geneMaxValue: 100
+    isMatatable: 1
   - geneName: Move Speed
     geneMinValue: 5
-    geneMaxValue: 100
+    geneMaxValue: 50
+    isMatatable: 1
   - geneName: Hunger Speed
     geneMinValue: 1
     geneMaxValue: 3
+    isMatatable: 1
   - geneName: Thirst Speed
     geneMinValue: 1
     geneMaxValue: 3
+    isMatatable: 1
   - geneName: Grow Speed
     geneMinValue: 0.5
     geneMaxValue: 3
+    isMatatable: 1
   - geneName: Hunger Level
     geneMinValue: 0.1
     geneMaxValue: 0.7
+    isMatatable: 1
   - geneName: Thirst Level
     geneMinValue: 0.1
     geneMaxValue: 0.7
+    isMatatable: 1
   - geneName: Pregnancy
     geneMinValue: 0.5
     geneMaxValue: 2
+    isMatatable: 1
   - geneName: Diet
     geneMinValue: 0
     geneMaxValue: 1
+    isMatatable: 0
 --- !u!1 &3417577832853671181
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,7 +590,7 @@ Transform:
   m_GameObject: {fileID: 3417577832853671181}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.3, y: 2.4, z: 0.5}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 100, y: 200, z: 100}
   m_Children: []
   m_Father: {fileID: 2785124919349328097}
   m_RootOrder: 1

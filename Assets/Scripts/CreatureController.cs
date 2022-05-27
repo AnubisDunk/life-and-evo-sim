@@ -66,18 +66,24 @@ public class CreatureController : MonoBehaviour
         creatureWayPoint = gameObject.transform.position;
         GeneDecode();
         cratureType = creature.creatureType;
+        StatsUi.ChangeCountType(cratureType, true);
         InitHunger(cratureType);
         absSpeed = moveSpeed;
         hungerBase = hunger;
         thirstBase = thirst;
         layerMask = 1 << 8;
+
         Moving();
         desiredCreature = null;
+        ExportData data = new ExportData();
+        data.WriteData(this, creature);
 
     }
 
     void InitHunger(Creature.CreatureType creatureType)
     {
+        hunger = 100;
+        thirst = 100;
         switch (creatureType)
         {
             case Creature.CreatureType.Herbivore:
@@ -87,8 +93,8 @@ public class CreatureController : MonoBehaviour
                 thirst = thirst * 1;
                 break;
             case Creature.CreatureType.Omnivore:
-                hunger = hunger * 3;
-                thirst = thirst * 3;
+                hunger = hunger * 1;
+                thirst = thirst * 1;
                 break;
         }
     }
@@ -104,6 +110,9 @@ public class CreatureController : MonoBehaviour
         hungerLevel = creature.hungerLevel;
         thirstLevel = creature.thirstLevel;
         pregnancyDuriation = creature.pregnancyDuriation;
+        Vector3 eyeSize = new Vector3(senseRadius * 2, 200, senseRadius * 2);
+        creature.lEye.transform.localScale = eyeSize;
+        creature.rEye.transform.localScale = eyeSize;
 
     }
     // Update is called once per frame
@@ -146,7 +155,20 @@ public class CreatureController : MonoBehaviour
 
     private void Fleeing(CreatureController hunter)
     {
-        Debug.Log($"Fleeing from {hunter.name}");
+        if (((transform.position - hunter.gameObject.transform.position).magnitude < senseRadius))
+        {
+
+            Debug.DrawRay(transform.position, transform.position + creatureWayPoint * -1, Color.cyan);
+            creatureWayPoint = (hunter.gameObject.transform.position - transform.position * -1).normalized;
+            Moving();
+            if (transform.position.y < 0)
+                Exploring();
+            //Debug.Log($"Fleeing from {hunter.name},senseMagniture = {(transform.position - hunter.gameObject.transform.position).magnitude}");
+        }
+        else
+        {
+            Exploring();
+        }
     }
 
     void Growing()
@@ -187,8 +209,8 @@ public class CreatureController : MonoBehaviour
             currentDuriation = 0;
             isPregnant = true;
             father = desiredCreature.GetComponent<Creature>().genes;
-            if (father == null) Debug.Log(this.name);
-            fName = desiredCreature.name;
+            if (father == null) Debug.Log("Father Null:" + this.name);
+            //fName = desiredCreature.name;
 
         }
         StartCoroutine(Resting());
@@ -208,41 +230,21 @@ public class CreatureController : MonoBehaviour
     }
     void Childbirth(Genes mother, Genes father, string name)
     {
-        Genes rng;
-        rng = GA(mother, father);
+        GeneticAlgorithm ga = new GeneticAlgorithm(mother, father, creature.GetComponent<CreatureGenome>(), 0.1f);
+        Genes rng = ga.Execute();
         GameObject child = Instantiate(replica, transform.position, Quaternion.identity, creatureHolder.transform);
-        child.GetComponent<Creature>().Init(false, 0, rng);
-        //child.GetComponent<Creature>().EncodeGenome(rng);
-        child.GetComponent<CreatureController>().Init();
         char childName = name[0];
         char childNumber = name[1];
         childName++;
         child.name = $"{childName}{childNumber}";
         StatsUi.bornValue++;
-        // StatsUi.populationValue++;
         child.GetComponent<CreatureController>().size = 1;
         child.GetComponent<CreatureController>().mName = this.name;
-        child.GetComponent<CreatureController>().fName = fName;
+        child.GetComponent<CreatureController>().fName = desiredCreature.name;
+        child.GetComponent<Creature>().Init(false, 0, rng);
+        child.GetComponent<CreatureController>().Init();
 
     }
-
-    private Genes GA(Genes mother, Genes father)
-    {
-        Genes rng = mother;
-        int cut = Random.Range(0, mother.genes.Length);
-        for (int i = 0; i < cut; i++)
-        {
-            rng.genes[i] = mother.genes[i];
-
-        }
-        for (int j = cut; j < father.genes.Length; j++)
-        {
-            rng.genes[j] = father.genes[j];
-        }
-        // Debug.Log($"cut:{cut}|{mother.ShowGenome()}|{father.ShowGenome()}|rng:{rng.ShowGenome()}");
-        return rng;
-    }
-
     IEnumerator Resting()
     {
 
@@ -282,7 +284,7 @@ public class CreatureController : MonoBehaviour
         if (waterDetected)
         {
             creatureWayPoint = waterDirection;
-            //Debug.Log($"{this.name} - {(transform.position - creatureWayPoint).magnitude}");
+            // Debug.Log($"{this.name} - {(transform.position - creatureWayPoint).magnitude}");
 
         }
         if (((transform.position - creatureWayPoint).magnitude < 5) && (waterDetected && isThirsty))
@@ -324,13 +326,14 @@ public class CreatureController : MonoBehaviour
     }
     void LookingForPrey()
     {
+        isHungry = true;
         isLookingForPrey = true;
         if (prey != null)
         {
 
             creatureWayPoint = prey.transform.position;
             Moving();
-            if ((object.Equals(prey,null)))
+            if (prey.GetComponent<CreatureController>() != null)
             {
                 if (((transform.position - creatureWayPoint).magnitude < 1))
                 {
@@ -345,10 +348,16 @@ public class CreatureController : MonoBehaviour
                 {
                     Exploring();
                 }
-            }else{
-                 state = Creature.State.Wander;
+            }
+            else
+            {
+                state = Creature.State.Wander;
             }
 
+        }
+        else
+        {
+            Exploring();
         }
     }
 
@@ -366,30 +375,24 @@ public class CreatureController : MonoBehaviour
         {
             moveSpeed = absSpeed;
         }
+        if (transform.position.x >= 500 || transform.position.x <= -500 || transform.position.z >= 500 || transform.position.z <= -500)
+        {
+            Die();
+            Destroy(this.gameObject);
+        }
     }
     public void Die()
     {
         StatsUi.deadValue++;
         StatsUi.populationValue--;
-        switch (cratureType)
-        {
-            case Creature.CreatureType.Herbivore:
-                StatsUi.hPopulation--;
-                break;
-            case Creature.CreatureType.Carnivore:
-                StatsUi.cPopulation--;
-                break;
-            case Creature.CreatureType.Omnivore:
-                StatsUi.oPopulation--;
-                break;
-
-        }
+        StatsUi.ChangeCountType(creature.creatureType, false);
         creature.eyeColor = Color.white;
         creature.bodyColor = Color.grey;
         //AlignSurfaceNormal();
-        transform.rotation = Quaternion.Euler(90, 0, 0);
+        transform.rotation = Quaternion.Euler(Random.Range(0, 2) == 0 ? -90 : 90, Random.Range(0, 360), 0);
         creature.UpdateColors();
         state = Creature.State.Dead;
+        Destroy(stateText.transform.parent.gameObject);
         foreach (var comp in gameObject.GetComponents<Component>())
         {
             if (!(comp is Transform))
@@ -397,22 +400,29 @@ public class CreatureController : MonoBehaviour
                 Destroy(comp);
             }
         }
-
-        ExportData data = new ExportData();
-        data.WriteData(this, creature);
         //Destroy(gameObject);
     }
     void Hunger()
     {
         if (hunger >= 0)
         {
-            if (hunger < hungerBase * hungerLevel)
+            if ((hunger < hungerBase * hungerLevel) && (!isHungry))
             {
                 if (state != Creature.State.LookingForWater)
-                    if (cratureType == Creature.CreatureType.Carnivore)
-                        state = Creature.State.LookingForPrey;
+                {
+                    if (cratureType != Creature.CreatureType.Herbivore){
+                        if ((cratureType == Creature.CreatureType.Omnivore))
+                        {
+                            state = Creature.State.LookingForPrey;
+                        }
+                        else
+                        {
+                            state = Creature.State.LookingForFood;
+                        }
+                    }
                     else
                         state = Creature.State.LookingForFood;
+                }
             }
             hunger = hunger - hungerSpeed * Time.deltaTime;
             float scaledvalue = hunger / hungerBase * 40;
@@ -463,16 +473,13 @@ public class CreatureController : MonoBehaviour
         AlignSurfaceNormal();
         AlignWaypointNormal();
         MoveTowardsWaypoint();
-        Debug.DrawRay(transform.position, transform.position + creatureWayPoint * -1, Color.cyan);
     }
     private Vector3 NewWayPoint(float radius)
     {
-        //float rng = Random.value;
-        //if (rng > 0.9f)
         var vector2 = Random.insideUnitCircle.normalized * radius;
         moveVector = new Vector3(vector2.x, 0, vector2.y);
         moveVector += transform.position;
-        //Debug.Log("Random:"+rng+"MOVEvec: "+ moveVector);
+
 
         return moveVector;
     }
@@ -498,7 +505,6 @@ public class CreatureController : MonoBehaviour
             Debug.DrawRay(transform.position, Vector3.down * hit.distance, Color.yellow);
             transform.localPosition = hit.point;
             transform.localRotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-            //Debug.Log($"Did Hit {hit.collider.gameObject.name}");
         }
     }
 
@@ -506,9 +512,11 @@ public class CreatureController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Vector3 origin = transform.position;
+#if UNITY_EDITOR
         Handles.DrawWireDisc(origin, new Vector3(0, 1, 0), senseRadius);
         Handles.DrawWireDisc(creatureWayPoint, new Vector3(0, 1, 0), 2);
         Handles.DrawLine(transform.position, creatureWayPoint);
+#endif
 
     }
     private void OnTriggerEnter(Collider other)
@@ -555,7 +563,7 @@ public class CreatureController : MonoBehaviour
             }
             else
             {
-                if ((cratureType == Creature.CreatureType.Carnivore) && (isLookingForPrey)
+                if (((cratureType == Creature.CreatureType.Carnivore) || cratureType == Creature.CreatureType.Omnivore) && (isLookingForPrey)
                  && (other.gameObject.GetComponent<CreatureController>().cratureType == Creature.CreatureType.Herbivore))
                 {
                     //state = Creature.State.Chasing;

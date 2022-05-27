@@ -13,4 +13,5 @@ public class CreatureGenome : MonoBehaviour
         public string geneName;
         public float geneMinValue;
         public float geneMaxValue;
+        public bool isMatatable;
     }

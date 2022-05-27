@@ -32,7 +32,6 @@ public class ExportData
             tw.Write(c.genes.genes[i].ToString() + ",");
         }
         tw.WriteLine();
-        Debug.Log("Data noted");
         tw.Close();
         
 

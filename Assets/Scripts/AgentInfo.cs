@@ -30,9 +30,11 @@ public class AgentInfo : MonoBehaviour
     CreatureController cc;
 
     int layerMask;
-    bool isFollowing, isShowingInfo, isPaused = false;
+    string s, lastSelected;
+    bool isDisabled, isFollowing, isShowingInfo, isPaused = false;
     void Start()
     {
+        isDisabled = false;
         layerMask = 1 << 9;
         sr = senseRadiusDrawer.GetComponent<SenseRender>();
 
@@ -55,53 +57,62 @@ public class AgentInfo : MonoBehaviour
     }
     void Update()
     {
-        // if (isFollowing)
-        // {
-        //     transform.position = agent.transform.position + new Vector3(0, 1, -5);
-        // }
-        if ((Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerMask)))
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            cc = hit.transform.gameObject.GetComponent<CreatureController>();
-            Creature c = hit.transform.gameObject.GetComponent<Creature>();
-            CreatureGenome cg = hit.transform.GetComponent<CreatureGenome>();
-            WriteData();
-            if (!isShowingInfo)
-            {
-                hud.SetActive(true);
-                for (int i = 0; i < cg.genome.Length; i++)
-                {
-                    GameObject geneNameUI = new GameObject(cg.genome[i].geneName);
-                    GameObject geneDataUI = new GameObject(c.genes.genes[i].ToString());
-                    geneNameUI.transform.SetParent(GeneName.transform);
-                    geneDataUI.transform.SetParent(GeneData.transform);
-                    Text geneNameUIText = geneNameUI.AddComponent<Text>();
-                    Text geneDataUIText = geneDataUI.AddComponent<Text>();
-                    geneNameUIText.font = roboto;
-                    geneNameUIText.fontSize = 20;
-                    geneDataUIText.fontSize = 20;
-                    geneDataUIText.font = roboto;
-                    geneNameUIText.text = cg.genome[i].geneName;
-                    geneDataUIText.text = c.genes.genes[i].ToString();
-                }
-                isShowingInfo = true;
-            }
-
-            DrawFace();
-            float senseRadius = cc.GetSenseRadius();
-            senseRadiusDrawer.transform.position = hit.transform.position;
-            sr.DrawCircle(100, senseRadius);
-            Inputs();
+            isDisabled = isDisabled ? false : true;
         }
-        // }
+        if (!isDisabled)
+        {
+            if ((Physics.Raycast(transform.position, transform.forward, out hit, Mathf.Infinity, layerMask)))
+            {
+                cc = hit.transform.gameObject.GetComponent<CreatureController>();
+                Creature c = hit.transform.gameObject.GetComponent<Creature>();
+                CreatureGenome cg = hit.transform.GetComponent<CreatureGenome>();
+                WriteData();
+                if (!isShowingInfo)
+                {
+                    //lastSelected = hit.transform.name;
+                    hud.SetActive(true);
+                    for (int i = 0; i < cg.genome.Length; i++)
+                    {
+                        GameObject geneNameUI = new GameObject(cg.genome[i].geneName);
+                        GameObject geneDataUI = new GameObject(c.genes.genes[i].ToString());
+                        geneNameUI.transform.SetParent(GeneName.transform);
+                        geneDataUI.transform.SetParent(GeneData.transform);
+                        Text geneNameUIText = geneNameUI.AddComponent<Text>();
+                        Text geneDataUIText = geneDataUI.AddComponent<Text>();
+                        geneNameUIText.font = roboto;
+                        geneNameUIText.fontSize = 20;
+                        geneDataUIText.fontSize = 20;
+                        geneDataUIText.font = roboto;
+                        geneNameUIText.text = cg.genome[i].geneName;
+                        geneDataUIText.text = c.genes.genes[i].ToString();
+                    }
+                    isShowingInfo = true;
+                }
+
+                DrawFace();
+                float senseRadius = cc.GetSenseRadius();
+                senseRadiusDrawer.transform.position = hit.transform.position;
+                sr.DrawCircle(100, senseRadius);
+                Inputs();
+
+            }
+            // }
+            else
+            {
+                RemoveFace();
+                RemoveData();
+                sr.DrawCircle(1, 0);
+                senseRadiusDrawer.transform.position = Vector3.zero;
+                hud.SetActive(false);
+                isShowingInfo = false;
+
+            }
+        }
         else
         {
-            RemoveFace();
-            RemoveData();
-            sr.DrawCircle(1, 0);
-            senseRadiusDrawer.transform.position = Vector3.zero;
             hud.SetActive(false);
-            isShowingInfo = false;
-
         }
     }
     void DrawFace()
@@ -138,7 +149,7 @@ public class AgentInfo : MonoBehaviour
         {
             sexText.text = "Female";
         }
-        nameText.text = cc.gameObject.name + "| "+ cc.mName + "/" + cc.fName;
+        nameText.text = cc.gameObject.name + "| " + cc.mName + "/" + cc.fName;
         stateText.text = cc.stateText.text;
         creatureTypeText.text = cc.cratureType.ToString();
         hungerText.text = cc.hunger.ToString();
