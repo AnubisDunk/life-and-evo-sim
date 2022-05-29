@@ -23,7 +23,7 @@ public class GeneticAlgorithm
             if((Random.value <= mutationRate) && (cg.genome[i].isMatatable)){
                 float mgene = Random.Range(cg.genome[i].geneMinValue,cg.genome[i].geneMaxValue);
                 child.genes[i] = Mathf.Round(mgene * 100f) * 0.01f;
-                Debug.Log($"Mutate at gene:{i}");
+               
             }
         }
     }
@@ -40,6 +40,5 @@ public class GeneticAlgorithm
         {
             child.genes[j] = father.genes[j];
         }
-        Debug.Log($"Cut gene at: {cut}");
     }
 }

@@ -450,8 +450,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hunger: 100
   thirst: 100
+  isVisibleBodies: 0
   state: 1
   stateText: {fileID: 643799670107465420}
+  maxChild: 2
   hungerBar: {fileID: 988883373637382355}
   thirstBar: {fileID: 2004329771618769932}
   currentDuriation: 0

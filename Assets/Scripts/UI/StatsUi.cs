@@ -84,7 +84,9 @@ public class StatsUi : MonoBehaviour
         tw.Close();
         Debug.Log("Pop data");
     }
-
+    private void OnApplicationQuit() {
+        WriteToFile();    
+    }
     void Update()
     {
         popText.text = "Population:" + populationValue.ToString();
