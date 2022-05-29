@@ -1,0 +1,143 @@
+{
+  "Nodes": [
+    {
+      "Annotation": "all_tundra_nodes",
+      "Action": "",
+      "Inputs": [],
+      "Outputs": [],
+      "TargetDirectories": [],
+      "PassIndex": 0,
+      "ToBuildDependencies": [
+        1
+      ],
+      "ToUseDependencies": [],
+      "OverwriteOutputs": true,
+      "FrontendResponseFiles": [],
+      "AllowUnexpectedOutput": true,
+      "AllowedOutputSubstrings": [],
+      "DebugActionIndex": 0
+    },
+    {
+      "Annotation": "Il2Cpp E:/Baka/LifeSim/EcosystemSim/Library/Il2cppBuildCache/Windows/x86/Native/GameAssembly.dll",
+      "Action": "E:\\unityEdit\\2020.3.21f1\\Editor\\Data\\il2cpp/build/deploy/netcoreapp3.1/il2cpp.exe --convert-to-cpp --emit-null-checks --enable-array-bounds-check --dotnetprofile=\"unityaot\" --compile-cpp --libil2cpp-static --platform=\"WindowsDesktop\" --architecture=\"x86\" --configuration=\"Release\" --outputpath=\"E:\\Baka\\LifeSim\\EcosystemSim\\Library/Il2cppBuildCache/Windows/x86\\Native\\GameAssembly.dll\" --cachedirectory=\"E:\\Baka\\LifeSim\\EcosystemSim\\Assets\\..\\Library/il2cpp_cache\" --baselib-directory=\"E:/unityEdit/2020.3.21f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport\\Variations\\win32_development_il2cpp\" --avoid-dynamic-library-copy --enable-debugger --profiler-report --map-file-parser=E:/unityEdit/2020.3.21f1/Editor/Data/Tools/MapFileParser/MapFileParser.exe --directory=E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed --generatedcppdir=E:/Baka/LifeSim/EcosystemSim/Library/Il2cppBuildCache/Windows/x86/il2cppOutput",
+      "Inputs": [
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/Assembly-CSharp.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/Mono.Security.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/mscorlib.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/System.Configuration.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/System.Core.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/System.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/System.Xml.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/Unity.Mathematics.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/Unity.RenderPipeline.Universal.ShaderLibrary.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/Unity.RenderPipelines.Core.Runtime.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/Unity.RenderPipelines.Universal.Runtime.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.AIModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.AndroidJNIModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.AnimationModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.AssetBundleModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.AudioModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.CoreModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.DirectorModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.GridModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.ImageConversionModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.IMGUIModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.InputLegacyModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.InputModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.ParticleSystemModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.Physics2DModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.PhysicsModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.SharedInternalsModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.SpriteShapeModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.SubsystemsModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.TerrainModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.TextCoreModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.TextCoreTextEngineModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.TextRenderingModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.TilemapModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.UI.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.UIElementsNativeModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.UIModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.UnityAnalyticsModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.UnityWebRequestModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.VFXModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.VideoModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.VRModule.dll",
+        "E:/Baka/LifeSim/EcosystemSim/Temp/StagingArea/Data/Managed/UnityEngine.XRModule.dll",
+        "E:/unityEdit/2020.3.21f1/Editor/Data/Tools/MapFileParser/MapFileParser.exe",
+        "E:/unityEdit/2020.3.21f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/Variations/win32_development_il2cpp/baselib.dll.lib",
+        "E:/unityEdit/2020.3.21f1/Editor/Data/il2cpp/build/deploy/netcoreapp3.1/il2cpp.exe"
+      ],
+      "Outputs": [
+        "E:/Baka/LifeSim/EcosystemSim/Library/Il2cppBuildCache/Windows/x86/Native/GameAssembly.dll"
+      ],
+      "TargetDirectories": [],
+      "PassIndex": 0,
+      "ToBuildDependencies": [],
+      "ToUseDependencies": [],
+      "OverwriteOutputs": false,
+      "FrontendResponseFiles": [],
+      "AllowUnexpectedOutput": true,
+      "AllowedOutputSubstrings": [],
+      "DebugActionIndex": 1
+    }
+  ],
+  "FileSignatures": [
+    {
+      "File": "../../../../../../../unityEdit/2020.3.21f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/Variations/win32_development_il2cpp"
+    },
+    {
+      "File": "../../../../Temp/StagingArea/Data/Managed"
+    },
+    {
+      "File": "artifacts/buildprogram/tundra_buildprogram.dag.json"
+    },
+    {
+      "File": "il2cpp_settings.json"
+    },
+    {
+      "File": "unitylinker_settings.json"
+    }
+  ],
+  "GlobSignatures": [
+    {
+      "Path": "../../../../Temp/StagingArea/Data/Managed"
+    },
+    {
+      "Path": "../../../../../../../unityEdit/2020.3.21f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/Variations/win32_development_il2cpp",
+      "Recurse": 1
+    }
+  ],
+  "ContentDigestExtensions": [
+    ".rsp",
+    ".dll",
+    ".exe",
+    ".txt",
+    ".c",
+    ".cpp",
+    ".h",
+    ".cs",
+    ".hpp"
+  ],
+  "StructuredLogFileName": "artifacts/tundra.log.json",
+  "StateFileName": "artifacts/TundraBuildState.state",
+  "StateFileNameTmp": "artifacts/TundraBuildState.state.tmp",
+  "ScanCacheFileName": "artifacts/tundra.scancache",
+  "ScanCacheFileNameTmp": "artifacts/tundra.scancache.tmp",
+  "DigestCacheFileName": "artifacts/tundra.digestcache",
+  "DigestCacheFileNameTmp": "artifacts/tundra.digestcache.tmp",
+  "DirectoriesCausingImplicitDependencies": [],
+        "NamedNodes": {
+          "all_tundra_nodes": 0
+        }
+,  "DefaultNodes": [
+    0
+  ],
+  "SharedResources": [],
+  "Scanners": [],
+  "Identifier": "artifacts/tundra.dag.json",
+  "BuildTitle": "Bee",
+  "RelativePathToRoot": ".."
+}
