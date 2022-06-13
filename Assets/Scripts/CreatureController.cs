@@ -118,6 +118,12 @@ public class CreatureController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (creatureWayPoint.x == 0)
+        {
+            Debug.Log(state);
+            creatureWayPoint = NewWayPoint(senseRadius);
+            
+        }
         Hunger();
         Growing();
         triggerCol.radius = senseRadius / 3;
@@ -182,7 +188,7 @@ public class CreatureController : MonoBehaviour
     {
         isLooking = true;
         desire = isMale ? false : true;
-        if (isFound && desiredCreature != null) //(desiredCreature.gameObject != null)
+        if (isFound && desiredCreature.gameObject != null) //(desiredCreature.gameObject != null)
         {
             creatureWayPoint = desiredCreature.transform.position;
             Moving();
@@ -377,7 +383,7 @@ public class CreatureController : MonoBehaviour
         {
             moveSpeed = absSpeed;
         }
-        if (transform.position.x >= Utils.mapSize * 5|| transform.position.x <= -Utils.mapSize * 5 || transform.position.z >= Utils.mapSize * 5 || transform.position.z <= -Utils.mapSize * 5)
+        if (transform.position.x >= Utils.mapSize * 5 || transform.position.x <= -Utils.mapSize * 5 || transform.position.z >= Utils.mapSize * 5 || transform.position.z <= -Utils.mapSize * 5)
         {
             Die();
             Destroy(this.gameObject);

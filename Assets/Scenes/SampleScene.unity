@@ -5470,8 +5470,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature: {fileID: 3309319955208987227, guid: b452744cceb150f48b6ad687e554156a,
     type: 3}
-  hCount: 50
-  cCount: 50
+  hCount: 20
+  cCount: 0
   oCount: 0
   creatureHolder: {fileID: 1920210697}
   mapSpacing: 10
